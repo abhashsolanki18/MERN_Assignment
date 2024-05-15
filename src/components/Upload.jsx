@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 
 const Upload = () => {
@@ -10,10 +11,18 @@ const Upload = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("image",image)
+
+    const result = await axios.post(
+      "http://localhost:8000/upload",
+      formData,
+      {
+        headers: {"Content-Type": "multipart/form-data"}
+      }
+    );
   };
 
   return (

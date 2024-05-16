@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// In-memory object to store image view counts
+const imageViewCounts = {};
+
 // Multer configuration for file upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -61,7 +64,19 @@ app.get('/images', async (req, res) => {
     );
 
     if (response.data && response.data.resources) {
-      res.status(200).json(response.data.resources);
+      // Increment view count for each image
+      const imagesWithViews = response.data.resources.map((image) => {
+        const publicId = image.public_id;
+        imageViewCounts[publicId] = imageViewCounts[publicId] ? imageViewCounts[publicId] + 1 : 1;
+        return {
+          public_id: publicId,
+          secure_url: image.secure_url,
+          views: imageViewCounts[publicId], // Attach view count to each image
+          description: image.context ? image.context.custom.description : '',
+        };
+      });
+
+      res.status(200).json(imagesWithViews);
     } else {
       res.status(404).json({ message: 'No images found in the specified folder' });
     }

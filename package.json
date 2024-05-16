@@ -11,8 +11,10 @@
     "start": "nodemon ./backend/app.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.1621.0",
     "axios": "^1.6.8",
     "cloudinary": "^2.2.0",
+    "cloudinary-core": "^2.13.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

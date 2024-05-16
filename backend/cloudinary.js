@@ -9,12 +9,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const uploadOnCloud = async (localFilePath, title, description) => {
   try {
     if (!localFilePath) return null;
     const result = await cloudinary.uploader.upload(localFilePath, {
       resource_type: 'image',
+      folder: 'images', 
       public_id: title,
+      tags: 'display',
       context: {
         caption: title,
         alt: description,
@@ -31,3 +34,5 @@ const uploadOnCloud = async (localFilePath, title, description) => {
 };
 
 export { uploadOnCloud };
+
+

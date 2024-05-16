@@ -5,7 +5,7 @@ import { uploadOnCloud } from './cloudinary.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 dotenv.config();
 
 const app = express();
@@ -46,8 +46,12 @@ app.get('/images', async (req, res) => {
     const folder = 'images'; // Your folder name where images are stored
 
     const response = await axios.get(
-      `https://api.cloudinary.com/v1_1/${cloudName}/resources/image?folder=${folder}`,
+      `https://api.cloudinary.com/v1_1/${cloudName}/resources/search`,
       {
+        params: {
+          expression: `folder:${folder}`, // Filter by folder
+          type: 'upload', // Filter by resource type (uploads)
+        },
         headers: {
           Authorization: `Basic ${Buffer.from(
             process.env.CLOUDINARY_API_KEY + ':' + process.env.CLOUDINARY_API_SECRET
@@ -59,7 +63,7 @@ app.get('/images', async (req, res) => {
     if (response.data && response.data.resources) {
       res.status(200).json(response.data.resources);
     } else {
-      res.status(404).json({ message: 'No images found' });
+      res.status(404).json({ message: 'No images found in the specified folder' });
     }
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -67,8 +71,7 @@ app.get('/images', async (req, res) => {
   }
 });
 
-
-
-app.listen(8000, () => {
-  console.log('Server is running on port 8000');
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

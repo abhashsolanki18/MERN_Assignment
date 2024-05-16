@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Upload = () => {
   const [image, setImage] = useState(null);
@@ -7,6 +7,7 @@ const Upload = () => {
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [error, setError] = useState('');
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -25,17 +26,19 @@ const Upload = () => {
     setIsLoading(true);
 
     try {
-      const result = await axios.post(
-        'http://localhost:8000/upload',
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }
-      );
+      const result = await axios.post('http://localhost:8000/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       console.log(result.data);
       setShowPopup(true);
+      // Reset form fields after successful upload
+      setImage(null);
+      setTitle('');
+      setDescription('');
+      setError('');
     } catch (error) {
       console.error('Error uploading image:', error);
+      setError('Failed to upload image');
     } finally {
       setIsLoading(false);
     }
@@ -88,9 +91,11 @@ const Upload = () => {
               className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-indigo-500"
             ></textarea>
           </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white font-semibold rounded-lg py-2 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={isLoading}
           >
             {isLoading ? 'Uploading...' : 'Upload'}
           </button>

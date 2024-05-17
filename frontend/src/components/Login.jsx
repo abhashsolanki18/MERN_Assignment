@@ -16,7 +16,7 @@ function Login() {
 
     try {
       await axios
-        .post("http://localhost:8000/", {
+        .post("https://mern-assignment-psi.vercel.app/", {
           email,
           password,
         })

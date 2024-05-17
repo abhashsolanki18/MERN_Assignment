@@ -17,9 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const express = require('express');
-const cors = require('cors');
-
-const app = express();
+const cors = require('cors')
 
 // Allow requests from your frontend domain
 app.use(cors({

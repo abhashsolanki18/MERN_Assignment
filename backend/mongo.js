@@ -1,4 +1,4 @@
-const mongoose=require("mongoose")
+import mongoose from "mongoose";
 mongoose.connect("mongodb://127.0.0.1:27017/mern")
 .then(()=>{
     console.log("mongodb connected");
@@ -25,4 +25,4 @@ const newSchema=new mongoose.Schema({
 
 const collection = mongoose.model("collection",newSchema)
 
-module.exports=collection
+export default collection

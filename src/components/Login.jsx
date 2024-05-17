@@ -52,7 +52,10 @@ function Login() {
         <h2 className="text-2xl font-bold text-center">Login</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -66,7 +69,10 @@ function Login() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -88,7 +94,10 @@ function Login() {
         </form>
         <div className="text-center">
           <p className="text-sm text-gray-600">Don't have an account?</p>
-          <Link to="/signup" className="text-sm font-medium text-indigo-600 hover:underline">
+          <Link
+            to="/signup"
+            className="text-sm font-medium text-indigo-600 hover:underline"
+          >
             Register
           </Link>
         </div>

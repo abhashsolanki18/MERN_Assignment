@@ -1,6 +1,6 @@
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { thunk } from 'redux-thunk';
 
 const initialState = {
   images: []
@@ -15,6 +15,6 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;

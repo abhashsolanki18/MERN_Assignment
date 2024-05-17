@@ -1,5 +1,5 @@
 // Popup.js
-import React from 'react';
+import React from "react";
 
 const Popup = ({ isOpen, onClose, message }) => {
   if (!isOpen) return null;

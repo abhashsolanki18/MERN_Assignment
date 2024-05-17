@@ -1,38 +1,41 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import Popup from "./Popup"; // Import the Popup component
+import Popup from "./Popup";
 
 function Signup() {
   const history = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupMessage, setPopupMessage] = useState('');
+  const [popupMessage, setPopupMessage] = useState("");
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8000/signup", {
-        email, name, password
-      })
-      .then(res => {
-        if (res.data === "exist") {
-          setPopupMessage("User already exists");
+      await axios
+        .post("http://localhost:8000/signup", {
+          email,
+          name,
+          password,
+        })
+        .then((res) => {
+          if (res.data === "exist") {
+            setPopupMessage("User already exists");
+            setIsPopupOpen(true);
+            setRedirectToLogin(true);
+          } else if (res.data === "notexist") {
+            history("/upload", { state: { id: email } });
+          }
+        })
+        .catch((e) => {
+          setPopupMessage("Wrong details");
           setIsPopupOpen(true);
-          setRedirectToLogin(true);
-        } else if (res.data === "notexist") {
-          history("/upload", { state: { id: email } });
-        }
-      })
-      .catch(e => {
-        setPopupMessage("Wrong details");
-        setIsPopupOpen(true);
-        console.log(e);
-      });
+          console.log(e);
+        });
     } catch (e) {
       console.log(e);
     }
@@ -51,7 +54,10 @@ function Signup() {
         <h2 className="text-2xl font-bold text-center">Signup</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
               Name
             </label>
             <input
@@ -64,7 +70,10 @@ function Signup() {
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -77,7 +86,10 @@ function Signup() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
@@ -98,7 +110,10 @@ function Signup() {
         </form>
         <div className="text-center">
           <p className="text-sm text-gray-600">Already have an account?</p>
-          <Link to="/login" className="text-sm font-medium text-indigo-600 hover:underline">
+          <Link
+            to="/login"
+            className="text-sm font-medium text-indigo-600 hover:underline"
+          >
             Login
           </Link>
         </div>

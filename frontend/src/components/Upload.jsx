@@ -30,7 +30,7 @@ const Upload = () => {
 
     try {
       const result = await axios.post(
-        "https://mern-assignment-backend.vercel.app/upload",
+        "http://localhost:8000/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

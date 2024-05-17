@@ -19,10 +19,6 @@ const DisplayImage = () => {
         <div className="flex justify-center items-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
-      ) : images.length === 0 ? (
-        <div className="flex justify-center items-center">
-          <p className="text-lg font-semibold text-gray-600">The gallery is empty.</p>
-        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {images.map((image) => (

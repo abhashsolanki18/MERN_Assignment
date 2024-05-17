@@ -2,33 +2,33 @@ import express from "express";
 import cors from "cors";
 import multer from "multer";
 import { uploadOnCloud } from "./cloudinary.js";
-import path from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
 import collection from "./mongo.js";
+
 dotenv.config();
 
-const app = express();
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
+
+const app = express();
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS configuration
+app.use(
+  cors({
+    origin: ["https://mern-assignment-frontend-rho.vercel.app"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 
-const express = require('express');
-const cors = require('cors')
-
-// Allow requests from your frontend domain
-app.use(cors({
-  origin: ['https://mern-assignment-frontend-rho.vercel.app'],
-  methods: ['GET', 'POST'],
-  credentials: true  // enable set cookie with credentials
-}));
-
-
-
-
+// Routes
 app.get("/", (req, res) => {
   res.json("running");
 });
@@ -64,8 +64,8 @@ app.post("/signup", async (req, res) => {
     if (check) {
       res.json("exist");
     } else {
+      await collection.insertOne(data);
       res.json("notexist");
-      await collection.insertMany([data]);
     }
   } catch (e) {
     res.json("fail");
@@ -76,11 +76,11 @@ const imageViewCounts = {};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./public/temp");
+    cb(null, path.join(__dirname, "./public/temp"));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + file.originalname);
+    cb(null, uniqueSuffix + "-" + file.originalname);
   },
 });
 
@@ -141,9 +141,7 @@ app.get("/images", async (req, res) => {
 
       res.status(200).json(imagesWithViews);
     } else {
-      res
-        .status(404)
-        .json({ message: "No images found in the specified folder" });
+      res.status(404).json({ message: "No images found in the specified folder" });
     }
   } catch (error) {
     console.error("Error fetching images:", error);

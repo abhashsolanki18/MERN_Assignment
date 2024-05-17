@@ -15,27 +15,31 @@ function Login() {
     e.preventDefault();
 
     try {
-      await axios
-        .post("https://mern-assignment-backend.vercel.app", {
+      const response = await axios.post(
+        "https://mern-assignment-backend.vercel.app/",
+        {
           email,
           password,
-        })
-        .then((res) => {
-          if (res.data === "exist") {
-            history("/upload", { state: { id: email } });
-          } else if (res.data === "notexist") {
-            setPopupMessage("User not signed up");
-            setIsPopupOpen(true);
-            setRedirectToSignup(true);
-          }
-        })
-        .catch((e) => {
-          setPopupMessage("Invalid details");
-          setIsPopupOpen(true);
-          console.log(e);
-        });
-    } catch (e) {
-      console.log(e);
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data === "exist") {
+        history("/upload", { state: { id: email } });
+      } else if (response.data === "notexist") {
+        setPopupMessage("User not signed up");
+        setIsPopupOpen(true);
+        setRedirectToSignup(true);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setPopupMessage("Invalid details");
+        setIsPopupOpen(true);
+      } else {
+        console.error("Error:", error.message);
+      }
     }
   }
 

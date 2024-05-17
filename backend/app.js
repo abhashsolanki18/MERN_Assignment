@@ -72,10 +72,10 @@ app.post("/signup",async(req,res)=>{
 
 })
 
-// In-memory object to store image view counts
+
 const imageViewCounts = {};
 
-// Multer configuration for file upload
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/temp');
@@ -102,15 +102,15 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
 app.get('/images', async (req, res) => {
   try {
-    const cloudName = 'abhashsolanki'; // Your Cloudinary cloud name
-    const folder = 'images'; // Your folder name where images are stored
+    const cloudName = 'abhashsolanki'; 
+    const folder = 'images'; 
 
     const response = await axios.get(
       `https://api.cloudinary.com/v1_1/${cloudName}/resources/search`,
       {
         params: {
-          expression: `folder:${folder}`, // Filter by folder
-          type: 'upload', // Filter by resource type (uploads)
+          expression: `folder:${folder}`,
+          type: 'upload', 
         },
         headers: {
           Authorization: `Basic ${Buffer.from(

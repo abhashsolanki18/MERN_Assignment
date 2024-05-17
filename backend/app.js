@@ -16,13 +16,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use(cors(
-{
-origin: ["https://mern-assignment-frontend-rho.vercel.app/"],
-methods: ["POST","GET"],
-credentials: true
-}
-));
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+
+// Allow requests from your frontend domain
+app.use(cors({
+  origin: ['https://mern-assignment-frontend-rho.vercel.app'],
+  methods: ['GET', 'POST'],
+  credentials: true  // enable set cookie with credentials
+}));
+
+
+
 
 app.get("/", (req, res) => {
   
